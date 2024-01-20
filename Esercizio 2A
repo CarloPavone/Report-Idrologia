@@ -1,1 +1,30 @@
+#     ESERCIZIO 2A
 
+rm(list=ls())
+library(moments)
+library(car)
+
+data <- read.table("Exercise2a.txt", header = T, sep = "\t")
+
+rain <- data$discharge
+
+n <- length(rain)
+media <- mean(rain)
+standard_dev <- sd(rain)
+sample_skewness <- skewness(rain)
+
+h <- hist(rain, plot=T)
+h$xname <- "frequencies of rain"
+h$counts <- h$counts/n
+plot(h, ylim=c(0,1))
+bxp <- boxplot(h$counts, horizontal = T, names = "frequenze cumulate")
+
+h$xname <- "cumulative rain"
+h$counts <- cumsum(h$counts)
+plot(h, ylim=c(0,1))
+
+bxp <- boxplot(h$counts, horizontal = T, names = "frequenze cumulate")
+
+media 
+standard_dev 
+sample_skewness
