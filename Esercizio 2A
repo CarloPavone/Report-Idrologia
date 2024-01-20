@@ -1,30 +1,46 @@
-#     ESERCIZIO 2A
+#Esercizio_2a
 
-rm(list=ls())
 library(moments)
-library(car)
 
-data <- read.table("Exercise2a.txt", header = T, sep = "\t")
+## Importazione dati
+data <- read.table ("Exercise2a.txt", header = TRUE , sep = "" )
+View(data)
+portata <- data$discharge
 
-rain <- data$discharge
+## Calcolo indici statistici
+n= length(portata)
+sample_mean <- sum(portata)/n
+sample_mean_R <- mean(portata)
 
-n <- length(rain)
-media <- mean(rain)
-standard_dev <- sd(rain)
-sample_skewness <- skewness(rain)
+# Mediana 
+sample_median <- median(portata)
 
-h <- hist(rain, plot=T)
-h$xname <- "frequencies of rain"
+# Varianza
+sample_var <- 1/(n-1)*sum((portata-sample_mean_R)^2)
+sample_var_R <- var(portata)
+
+# Deviazione standar
+sample_deviation_standard <- (sample_var_R)^(1/2)
+
+#install.packages("moments")
+
+# Indice di asimmetria 
+sample_skewness <- skewness(portata)
+sample_kurtosisi <- kurtosis(portata)
+
+# Istogramma freq assolute
+h <- hist(portata , plot = T)
+
+# Istogramma freq relative
+counts <- h$counts
+freq_relative <- counts/n 
 h$counts <- h$counts/n
-plot(h, ylim=c(0,1))
-bxp <- boxplot(h$counts, horizontal = T, names = "frequenze cumulate")
+plot (h , ylim = c(0,1), main = 'Frequenze relative di Pioggia')
 
-h$xname <- "cumulative rain"
-h$counts <- cumsum(h$counts)
-plot(h, ylim=c(0,1))
+# Istogramma frequenze comulate 
+cumulata <- cumsum(freq_relative)
+h$counts <- cumulata
+plot (h , ylim = c(0,1),main = 'Frequenze cumulate di Pioggia')
 
-bxp <- boxplot(h$counts, horizontal = T, names = "frequenze cumulate")
-
-media 
-standard_dev 
-sample_skewness
+# Boxplot
+boxplot (portata , main = 'Boxplot')
